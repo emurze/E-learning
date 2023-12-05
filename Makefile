@@ -47,15 +47,24 @@ migrate:
 	fi
 
 
-# Stop
+# Restart | Down
+
+restart:
+	docker compose restart
+
+restart-prod:
+	docker compose -f docker-compose.prod.yml restart
 
 down:
 	docker compose down
+
+down-prod:
 	docker compose -f docker-compose.prod.yml down
 
 clean:
 	docker compose down -v
 	docker compose -f docker-compose.prod.yml down -v
+
 
 # Tests | You can run tests only if you have previously run container
 
@@ -70,7 +79,7 @@ unittests:
 	@if [ -z $$(docker ps -q -f name=${DOCKER_CONTAINER_NAME}) ]; then \
 		$(call raise_container_does_not_exist); \
 	else \
-		docker exec ${DOCKER_CONTAINER_NAME} poetry run python3 -m unittest discover src/utils/; \
+		docker exec ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run python3 manage.py test"; \
 	fi
 
 coverage:
