@@ -8,7 +8,6 @@ env:
   DEBUG: 1
   LOGGING_LEVEL: DEBUG
 
-  DB_HOST: db
   DB_NAME: e-learning
   DB_USER: e-learning
   DB_PASSWORD: 12345678
@@ -121,6 +120,8 @@ jobs:
           version: 2.14.2
 
       - name: Run production server
+        env:
+         DB_HOST: db
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> env/.e-learning.env
           echo "DEBUG=$DEBUG" >> env/.e-learning.env
