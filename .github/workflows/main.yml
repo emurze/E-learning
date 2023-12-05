@@ -5,6 +5,7 @@ on: [push]
 env:
   STAGING_SERVER: localhost
 
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
   DEBUG: 1
   LOGGING_LEVEL: DEBUG
 
@@ -154,6 +155,8 @@ jobs:
           poetry install
 
       - name: Run End-To-End tests
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           poetry run python3 src/manage.py test tests
           
