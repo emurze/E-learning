@@ -8,6 +8,7 @@ env:
   DEBUG: 1
   LOGGING_LEVEL: DEBUG
 
+  DB_HOST: db
   DB_NAME: e-learning
   DB_USER: e-learning
   DB_PASSWORD: 12345678
@@ -126,6 +127,7 @@ jobs:
           echo "LOGGING_LEVEL=$LOGGING_LEVEL" >> env/.e-learning.env
           echo "DB_NAME=$DB_NAME" >> env/.e-learning.env
           echo "DB_USER=$DB_USER" >> env/.e-learning.env
+          echo "DB_HOST=$DB_HOST" >> env/.e-learning.env
           echo "DB_PASSWORD=$DB_PASSWORD" >> env/.e-learning.env
           echo "STAGING_SERVER=$STAGING_SERVER" >> env/.e-learning.env
 
