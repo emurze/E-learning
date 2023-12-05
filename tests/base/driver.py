@@ -1,4 +1,5 @@
 import abc
+import os
 
 from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -10,7 +11,7 @@ class BaseDriverFactory(abc.ABC):
 
 
 class ChromeDriverFactory(BaseDriverFactory):
-    host = 'chrome'
+    host = os.getenv('STAGING_SERVER', 'chrome')
     port = '4444'
 
     @classmethod

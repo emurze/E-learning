@@ -7,7 +7,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 
-ALLOWED_HOSTS = ['mysite.com', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'mysite.com',
+    '0.0.0.0',
+    '127.0.0.1',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.base.apps.BaseConfig',
+    'apps.registration.apps.RegistrationConfig',
 ]
 
 MIDDLEWARE = [
