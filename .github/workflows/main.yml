@@ -101,7 +101,7 @@ jobs:
 #        tags: emurze/e-learning:1
 
   end-to-end-tests:
-    needs: build
+#    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Set up Repository
