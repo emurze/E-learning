@@ -5,6 +5,7 @@ on: [push]
 env:
   STAGING_SERVER: localhost
 
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
   DEBUG: 1
   LOGGING_LEVEL: DEBUG
 
@@ -72,6 +73,8 @@ jobs:
           poetry install
 
       - name: Run Unit and Integration Tests
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           bash -c "cd src &&
                    poetry run coverage run --rcfile ../setup.cfg --data-file logs/.coverage manage.py test &&
@@ -109,7 +112,7 @@ jobs:
         run: |
           mkdir src/logs && touch src/logs/general.log
 
-      - name: Create Env dir
+      - name: Create env dir
         run: |
           mkdir env
 
@@ -118,13 +121,15 @@ jobs:
           version: 2.14.2
 
       - name: Run production server
+        env:
+         DB_HOST: db
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> env/.e-learning.env
           echo "DEBUG=$DEBUG" >> env/.e-learning.env
           echo "LOGGING_LEVEL=$LOGGING_LEVEL" >> env/.e-learning.env
           echo "DB_NAME=$DB_NAME" >> env/.e-learning.env
           echo "DB_USER=$DB_USER" >> env/.e-learning.env
-          echo "DB_HOST=db" >> env/.e-learning.env
+          echo "DB_HOST=$DB_HOST" >> env/.e-learning.env
           echo "DB_PASSWORD=$DB_PASSWORD" >> env/.e-learning.env
           echo "STAGING_SERVER=$STAGING_SERVER" >> env/.e-learning.env
 
