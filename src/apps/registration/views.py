@@ -10,15 +10,15 @@ User = get_user_model()
 
 
 class RegistrationView(FormView):
-    template_name: str = 'registration/register.html'
+    template_name: str = "registration/register.html"
     form_class: Form = RegistrationForm
-    success_url: str = reverse_lazy('home:home')
+    success_url: str = reverse_lazy("home:home")
 
     def form_valid(self, form: RegistrationForm) -> HttpResponse:
         cd = form.cleaned_data
         User.objects.create_user(
-            username=cd['username'],
-            password=cd['password'],
+            username=cd["username"],
+            password=cd["password"],
         )
         return super().form_valid(form)
 

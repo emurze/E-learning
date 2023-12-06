@@ -5,11 +5,11 @@ from tests.registration.page import RegistrationPage
 
 
 class RegistrationPageTestCase(SharedTestCase):
-    page_title: str = 'Registration'
+    page_title: str = "Registration"
 
     @property
     def url(self) -> str:
-        return f'{self.live_server_url}/registration'
+        return f"{self.live_server_url}/registration"
 
     def setUp(self) -> None:
         super().setUp()
@@ -24,12 +24,12 @@ class RegistrationPageTestCase(SharedTestCase):
 
     def test_form_valid_redirect(self) -> None:
         # Client wants to see form
-        username_input = self.driver.find_element(By.ID, 'id_username')
-        password_input = self.driver.find_element(By.ID, 'id_password')
-        password2_input = self.driver.find_element(By.ID, 'id_password2')
+        username_input = self.driver.find_element(By.ID, "id_username")
+        password_input = self.driver.find_element(By.ID, "id_password")
+        password2_input = self.driver.find_element(By.ID, "id_password2")
 
         # Client wise to fill form
-        username_input.send_keys('user_1')
-        password_input.send_keys('12345678')
-        password2_input.send_keys('12345678')
+        username_input.send_keys("user_1")
+        password_input.send_keys("12345678")
+        password2_input.send_keys("12345678")
         password2_input.submit()
