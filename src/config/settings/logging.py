@@ -7,23 +7,23 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {
         "file": {
-            "level": os.getenv('LOGGING_LEVEL'),
+            "level": os.getenv("LOGGING_LEVEL"),
             "class": "logging.FileHandler",
             "filename": Path(BASE_DIR, "logs", "general.log"),
         },
         "stream": {
-            "level": os.getenv('LOGGING_LEVEL'),
+            "level": os.getenv("LOGGING_LEVEL"),
             "class": "logging.StreamHandler",
         },
     },
     "loggers": {
         "": {
-            "level": os.getenv('LOGGING_LEVEL'),
+            "level": os.getenv("LOGGING_LEVEL"),
             "handlers": [
                 "stream",
                 "file",
             ],
-            'propagate': True,
+            "propagate": True,
         },
     },
 }

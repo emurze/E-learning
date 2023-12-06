@@ -6,12 +6,13 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 class BaseDriverFactory(abc.ABC):
     @abc.abstractmethod
-    def get_webdriver(self) -> WebDriver: ...
+    def get_webdriver(self) -> WebDriver:
+        ...
 
 
 class ChromeDriverFactory(BaseDriverFactory):
-    host = 'chrome'
-    port = '4444'
+    host = "chrome"
+    port = "4444"
 
     @classmethod
     def get_webdriver(cls):

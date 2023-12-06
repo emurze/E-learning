@@ -70,7 +70,7 @@ unittests:
 	@if [ -z $$(docker ps -q -f name=${DOCKER_CONTAINER_NAME}) ]; then \
 		$(call raise_container_does_not_exist); \
 	else \
-		docker exec ${DOCKER_CONTAINER_NAME} poetry run python3 -m unittest discover src/utils/; \
+		docker exec ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run python3 manage.py test"; \
 	fi
 
 coverage:

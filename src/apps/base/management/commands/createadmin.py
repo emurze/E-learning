@@ -9,7 +9,7 @@ lg = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'This command creates superuser'
+    help = "This command creates superuser"
 
     def handle(self, *_, **__) -> None:
         if not User.objects.filter(is_staff=True).exists():
@@ -18,6 +18,6 @@ class Command(BaseCommand):
                 email=settings.DEFAULT_ADMIN_EMAIL,
                 password=settings.DEFAULT_ADMIN_PASSWORD,
             )
-            self.stdout.write(f'Admin {user.username} was created.')
+            self.stdout.write(f"Admin {user.username} was created.")
         else:
             self.stdout.write("You already have admin. Admin wasn't created.")
