@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.base.apps.BaseConfig',
+    'apps.home.apps.HomeConfig',
     'apps.registration.apps.RegistrationConfig',
 ]
 

@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.core.management import call_command
 
 User = get_user_model()
-regex = re.compile(r'\S+')
+regex = re.compile(r"\S+")
 
 
 class CreateAdminCommandTest(TestCase):
@@ -21,7 +21,7 @@ class CreateAdminCommandTest(TestCase):
             *args,
             **kwargs,
         )
-        cmd = ' '.join(regex.findall(out.getvalue()))
+        cmd = " ".join(regex.findall(out.getvalue()))
 
         if cmd == "You already have admin. Admin wasn't created.":
             return False
@@ -36,8 +36,8 @@ class CreateAdminCommandTest(TestCase):
     # integration
     def test_cannot_create_admin_if_exists(self) -> None:
         User.objects.create_superuser(
-            username='wef_wef',
-            password='1234wef34',
+            username="wef_wef",
+            password="1234wef34",
         )
         cmd = self.call_command()
         self.assertFalse(cmd)

@@ -7,6 +7,7 @@ from config import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.registration.urls')),
+    path("", include("apps.home.urls", namespace="home")),
 ]
 
 if settings.DEBUG:
