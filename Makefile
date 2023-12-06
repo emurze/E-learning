@@ -79,21 +79,21 @@ unittests:
 	@if [ -z $$(docker ps -q -f name=${DOCKER_CONTAINER_NAME}) ]; then \
 		$(call raise_container_does_not_exist); \
 	else \
-		docker exec ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run python3 manage.py test"; \
+		docker exec ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run python3 manage.py test ${path}"; \
 	fi
 
 coverage:
 	@if [ -z $$(docker ps -q -f name=${DOCKER_CONTAINER_NAME}) ]; then \
 		$(call raise_container_does_not_exist); \
 	else \
-		docker exec ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run coverage run --rcfile ../setup.cfg --data-file logs/.coverage manage.py test && poetry run coverage report --rcfile ../setup.cfg --data-file logs/.coverage"; \
+		docker exec ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run coverage run --rcfile ../setup.cfg --data-file logs/.coverage manage.py test ${path} && poetry run coverage report --rcfile ../setup.cfg --data-file logs/.coverage"; \
 	fi
 
 e2etests:
 	@if [ -z $$(docker ps -q -f name=${DOCKER_CONTAINER_NAME}) ]; then \
 		$(call raise_container_does_not_exist); \
 	else \
-		docker exec ${DOCKER_CONTAINER_NAME} bash -c "poetry run python3 src/manage.py test tests"; \
+		docker exec ${DOCKER_CONTAINER_NAME} bash -c "poetry run python3 src/manage.py test tests/${path}"; \
 	fi
 
 test: lint coverage e2etests

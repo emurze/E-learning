@@ -1,7 +1,7 @@
 from django.urls import resolve, reverse_lazy
 
-from .base import BaseTestCase
 from apps.registration.views import RegistrationView
+from utils.tests.base import BaseTestCase
 
 
 class RegistrationViewIntegrationTest(BaseTestCase):

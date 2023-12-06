@@ -6,7 +6,7 @@ from apps.registration.forms import (
     ERROR_MESSAGE_USERNAME_LESS_THAN_3,
     ERROR_MESSAGE_PASSWORDS_DO_NOT_EQUALLY,
 )
-from apps.registration.tests.base import BaseTestCase
+from utils.tests.base import BaseTestCase
 
 lg = logging.getLogger(__name__)
 
