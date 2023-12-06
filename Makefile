@@ -49,6 +49,9 @@ migrate:
 
 # Stop
 
+restart:
+	docker compose restart
+
 down:
 	docker compose down
 	docker compose -f docker-compose.prod.yml down
