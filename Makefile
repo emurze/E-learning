@@ -47,18 +47,27 @@ migrate:
 	fi
 
 
-# Stop
+# Restart | Down
+
+restart:
+	docker compose restart
+
+restart-prod:
+	docker compose -f docker-compose.prod.yml restart
 
 restart:
 	docker compose restart
 
 down:
 	docker compose down
+
+down-prod:
 	docker compose -f docker-compose.prod.yml down
 
 clean:
 	docker compose down -v
 	docker compose -f docker-compose.prod.yml down -v
+
 
 # Tests | You can run tests only if you have previously run container
 
