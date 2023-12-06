@@ -55,9 +55,6 @@ restart:
 restart-prod:
 	docker compose -f docker-compose.prod.yml restart
 
-restart:
-	docker compose restart
-
 down:
 	docker compose down
 
