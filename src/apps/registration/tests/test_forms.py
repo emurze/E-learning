@@ -14,7 +14,7 @@ lg = logging.getLogger(__name__)
 class RegistrationFormTest(BaseTestCase):
     def test_error_username_less_than_3(self) -> None:
         form = RegistrationForm(data={
-            'username': 'vlad',
+            'username': 'vl',
             'password': 12345678,
             'password2': 12345678,
         })

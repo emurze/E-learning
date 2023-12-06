@@ -17,7 +17,6 @@ class RegistrationForm(forms.Form):
 
     def clean_username(self) -> str:
         username = self.cleaned_data['username']
-        print(f'clean {len(username) > 2}')
         if len(username) < 3:
             raise RegistrationValidationError(
                 ERROR_MESSAGE_USERNAME_LESS_THAN_3,
