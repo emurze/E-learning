@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>
+		{% block title %}
+		{% endblock %}
+	</title>
+</head>
+<body>
+	<div id="total_page">
+		<header class="header">
+			{% include 'include/header.html' %}
+		</header>
+		<main class="main">
+			{% block content %}
+			{% endblock %}
+		</main>
+		<footer class="footer">
+			{% include 'include/footer.html' %}
+		</footer>
+	</div>
+</body>
+</html>

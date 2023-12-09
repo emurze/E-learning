@@ -1,26 +1,29 @@
 from django.contrib.auth import get_user_model
+from django.forms import Form
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic import FormView
 
 from apps.registration.forms import RegistrationForm
+from apps.registration.mixins import SuccessMessageMixin
 
 User = get_user_model()
+REGISTRATION_SUCCESS_MESSAGE = "Registration has been successful"
 
 
-class RegistrationView(FormView):
-    template_name: str = 'registration/register.html'
-    form_class = RegistrationForm
+class RegistrationView(
+    SuccessMessageMixin,
+    FormView,
+):
+    template_name: str = "registration/register.html"
+    form_class: Form = RegistrationForm
+    success_url: str = reverse_lazy("login")
+    success_message: str = REGISTRATION_SUCCESS_MESSAGE
 
     def form_valid(self, form: RegistrationForm) -> HttpResponse:
         cd = form.cleaned_data
         User.objects.create_user(
-            username=cd['username'],
-            password=cd['password'],
+            username=cd["username"],
+            password=cd["password"],
         )
-        print('form_valid')
-        return redirect('/')
-
-    def form_invalid(self, form):
-        print(f'form_invalid {form.errors}')
-        return super().form_invalid(form)
+        return super().form_valid(form)
