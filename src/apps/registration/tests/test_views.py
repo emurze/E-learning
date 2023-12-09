@@ -2,7 +2,10 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.test import Client
 
-from apps.registration.forms import RegistrationForm, ERROR_MESSAGE_USERNAME_LESS_THAN_3
+from apps.registration.forms import (
+    RegistrationForm,
+    ERROR_MESSAGE_USERNAME_LESS_THAN_3,
+)
 from apps.registration.views import RegistrationView
 from utils.tests.base import BaseTestCase
 

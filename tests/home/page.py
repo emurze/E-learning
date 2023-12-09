@@ -1,9 +1,6 @@
-from tests.base.shared import SharedTestCase
+from tests.shared.page import BasePage
 
 
-class HomePage:
-    def __init__(self, test: SharedTestCase) -> None:
-        self.driver = test.driver
-
-    def get_title(self) -> None:
+class HomePage(BasePage):
+    def get_title(self) -> str:
         return self.driver.title
