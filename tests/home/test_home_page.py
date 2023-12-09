@@ -6,7 +6,7 @@ from tests.shared.testcase import SharedTestCase
 
 class HomePageTestCase(SharedTestCase):
     page_class: Type[HomePage] = HomePage
-    path: str = ''
+    path: str = ""
 
     def test_title(self) -> None:
         self.driver.get(self.url)

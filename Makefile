@@ -90,6 +90,10 @@ coverage:
 	fi
 
 e2etests:
+	@if [ "${try}" = "restart" ]; then \
+  		docker compose restart; \
+  	fi
+
 	@if [ -z $$(docker ps -q -f name=${DOCKER_CONTAINER_NAME}) ]; then \
 		$(call raise_container_does_not_exist); \
 	else \

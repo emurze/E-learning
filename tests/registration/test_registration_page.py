@@ -1,5 +1,4 @@
 from typing import Type
-from unittest import skip
 
 from selenium.webdriver.common.by import By
 
@@ -10,17 +9,15 @@ from tests.shared.testcase import SharedTestCase
 class RegistrationPageTestCase(SharedTestCase):
     page_title: str = "Registration"
     page_class: Type[RegistrationPage] = RegistrationPage
-    path: str = '/registration'
+    path: str = "/registration"
 
-    # @skip
-    # def test_can_show_title(self) -> None:
-    #     # Client comes to the page
-    #     self.driver.get(self.url)
+    def test_can_show_title(self) -> None:
+        # Client comes to the page
+        self.driver.get(self.url)
+
+        # Client wants to see Registration title
+        self.assertEqual(self.page.get_title(), self.page_title)
     #
-    #     # Client wants to see Registration title
-    #     self.assertEqual(self.page.get_title(), self.page_title)
-    #
-    # @skip
     # def test_form_valid_redirect(self) -> None:
     #     # Client comes to the page
     #     self.driver.get(self.url)
@@ -37,8 +34,8 @@ class RegistrationPageTestCase(SharedTestCase):
     #     password2_input.submit()
     #
     #     # Then wants to be redirected to Log-in page
-    #     self.assertEqual(self.driver.title, 'Log-in')
+    #     self.assertEqual(self.driver.title, "Log-in")
     #
     #     # And wants to see the success message
-    #     success = self.driver.find_element(By.CLASS_NAME, 'success')
-    #     self.assertIn('hi', success.text)
+    #     success = self.driver.find_element(By.CLASS_NAME, "success")
+    #     self.assertIn("hi", success.text)

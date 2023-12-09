@@ -11,7 +11,7 @@ class SuccessMessageMixin(mixin_for(FormView)):
     Success message mixin for Views that inherited FormMixin or ModelFormMixin
     """
 
-    success_message: str = ''
+    success_message: str = ""
 
     def form_valid(self, form: Form) -> HttpResponse:
         response = super().form_valid(form)
