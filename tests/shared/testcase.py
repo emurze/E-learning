@@ -11,6 +11,7 @@ class BaseLiveServerTestCase(StaticLiveServerTestCase):
     Require:
         - port: int, between 8081 - 8999 like 8081
     """
+
     host = socket.gethostbyname(socket.gethostname())
 
 
@@ -29,7 +30,7 @@ class EndToEndTestCase(BaseLiveServerTestCase):
 
     def setUp(self) -> None:
         if self.page_class is None:
-            raise PageDoesNotExistsError('Please add page_class attribute')
+            raise PageDoesNotExistsError("Please add page_class attribute")
 
         self.page = self.page_class(get_driver())
 

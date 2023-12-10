@@ -28,4 +28,4 @@ class RegistrationPage(BasePage):
         password_input.submit()
 
     def get_success_message(self) -> str:
-        return self.find_element(By.CLASS_NAME, 'success').text
+        return self.find_element(By.CLASS_NAME, "success").text
