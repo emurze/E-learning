@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 
   chrome:
-    image: selenium/standalone-chrome:latest
+    image: selenium/standalone-chrome:4.16
     container_name: 'chrome'
     networks:
       - backend

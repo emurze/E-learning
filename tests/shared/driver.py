@@ -11,12 +11,25 @@ class BaseDriverFactory(abc.ABC):
         ...
 
 
+class FirefoxDriverFactory(BaseDriverFactory):
+    host = os.getenv("STAGING_SERVER", "firefox")
+    port = "4444"
+
+    @classmethod
+    def get_webdriver(cls) -> WebDriver:
+        options = webdriver.FirefoxOptions()
+        return webdriver.Remote(
+            f"http://{cls.host}:{cls.port}",
+            options=options,
+        )
+
+
 class ChromeDriverFactory(BaseDriverFactory):
     host = os.getenv("STAGING_SERVER", "chrome")
     port = "4444"
 
     @classmethod
-    def get_webdriver(cls):
+    def get_webdriver(cls) -> WebDriver:
         options = webdriver.ChromeOptions()
         return webdriver.Remote(
             f"http://{cls.host}:{cls.port}",

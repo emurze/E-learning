@@ -1,16 +1,12 @@
-from django.contrib.auth import get_user_model
 from django.contrib.messages import get_messages
-from django.urls import reverse_lazy
 from django.test import Client
+from django.contrib.auth import get_user_model
+from django.urls import reverse_lazy
 
-from apps.registration.forms import (
-    RegistrationForm,
-    ERROR_MESSAGE_USERNAME_LESS_THAN_3,
-)
-from apps.registration.views import (
-    RegistrationView,
-    REGISTRATION_SUCCESS_MESSAGE,
-)
+from apps.registration.forms import RegistrationForm, \
+    ERROR_MESSAGE_USERNAME_LESS_THAN_3
+from apps.registration.views import RegistrationView, \
+    REGISTRATION_SUCCESS_MESSAGE
 from utils.tests.base import ExtendedTestCase
 
 User = get_user_model()
@@ -19,8 +15,12 @@ User = get_user_model()
 class RegistrationViewTestCase(ExtendedTestCase):
     url: str = reverse_lazy("registration")
     view_class = RegistrationView
-    form_valid_redirect_url: str = reverse_lazy("login")
-    form_invalid_template_name: str = "registration/register.html"
+
+    class FormValid:
+        redirect_url: str = reverse_lazy("login")
+
+    class FormInvalid:
+        template_name: str = "registration/register.html"
 
     # unittest
     def test_content_registration_form(self) -> None:
@@ -38,14 +38,14 @@ class RegistrationViewTestCase(ExtendedTestCase):
             self.url,
             data={
                 "username": "vlad",
-                "password": 12345678,
-                "password2": 12345678,
+                "password": "12345678",
+                "password2": "12345678",
             },
         )
         response = self.view_class.as_view()(request)
         response.client = Client()
 
-        self.assertRedirects(response, self.form_valid_redirect_url)
+        self.assertRedirects(response, self.FormValid.redirect_url)
 
     # integration
     def test_form_valid_creating_user(self) -> None:
@@ -53,8 +53,8 @@ class RegistrationViewTestCase(ExtendedTestCase):
             self.url,
             data={
                 "username": "vlad",
-                "password": 12345678,
-                "password2": 12345678,
+                "password": "12345678",
+                "password2": "12345678",
             },
         )
         response = self.view_class.as_view()(request)
@@ -68,8 +68,8 @@ class RegistrationViewTestCase(ExtendedTestCase):
             self.url,
             data={
                 "username": "vl",
-                "password": 12345678,
-                "password2": 12345678,
+                "password": "12345678",
+                "password2": "12345678",
             },
         )
         response = self.view_class.as_view()(request)
@@ -83,21 +83,20 @@ class RegistrationViewTestCase(ExtendedTestCase):
             self.url,
             data={
                 "username": "vl",
-                "password": 12345678,
-                "password2": 12345678,
+                "password": "12345678",
+                "password2": "12345678",
             },
         )
-
-        self.assertTemplateUsed(response, self.form_invalid_template_name)
+        self.assertTemplateUsed(response, self.FormInvalid.template_name)
 
     # integration
-    def test_form_invalid_show_error(self) -> None:
+    def test_form_invalid_can_show_error(self) -> None:
         request = self.request_factory.post(
             self.url,
             data={
                 "username": "vo",
-                "password": 12345678,
-                "password2": 12345678,
+                "password": "12345678",
+                "password2": "12345678",
             },
         )
         response = self.view_class.as_view()(request)
@@ -110,8 +109,8 @@ class RegistrationViewTestCase(ExtendedTestCase):
             self.url,
             data={
                 "username": "vlad",
-                "password": 12345678,
-                "password2": 12345678,
+                "password": "12345678",
+                "password2": "12345678",
             },
         )
         self.view_class.as_view()(request)
