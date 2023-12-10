@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 class LoginMixin(mixin_for(TestCase)):
-    login_username: str = "vlad"
+    login_username: str = "vladik"
     login_password: str = "12345678"
 
     @classmethod

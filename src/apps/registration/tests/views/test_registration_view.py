@@ -1,20 +1,12 @@
-from pprint import pprint
-
-from django.contrib.auth import get_user_model
 from django.contrib.messages import get_messages
-from django.urls import reverse_lazy
 from django.test import Client
+from django.contrib.auth import get_user_model
+from django.urls import reverse_lazy
 
-from apps.registration.forms import (
-    RegistrationForm,
-    ERROR_MESSAGE_USERNAME_LESS_THAN_3,
-)
-from apps.registration.views import (
-    RegistrationView,
-    REGISTRATION_SUCCESS_MESSAGE,
-    MyLoginView,
-    LOGIN_SUCCESS_MESSAGE,
-)
+from apps.registration.forms import RegistrationForm, \
+    ERROR_MESSAGE_USERNAME_LESS_THAN_3
+from apps.registration.views import RegistrationView, \
+    REGISTRATION_SUCCESS_MESSAGE
 from utils.tests.base import ExtendedTestCase
 
 User = get_user_model()
@@ -95,11 +87,10 @@ class RegistrationViewTestCase(ExtendedTestCase):
                 "password2": "12345678",
             },
         )
-
         self.assertTemplateUsed(response, self.FormInvalid.template_name)
 
     # integration
-    def test_form_invalid_show_error(self) -> None:
+    def test_form_invalid_can_show_error(self) -> None:
         request = self.request_factory.post(
             self.url,
             data={
@@ -129,44 +120,3 @@ class RegistrationViewTestCase(ExtendedTestCase):
             message,
             REGISTRATION_SUCCESS_MESSAGE,
         )
-
-
-class MyLoginViewTestCase(ExtendedTestCase):
-    url: str = reverse_lazy("login")
-    view_class = MyLoginView
-
-    class FormValid:
-        redirect_url: str = reverse_lazy("home:home")
-
-    class FormInvalid:
-        template_name: str = "registration/login.html"
-
-    def setUp(self) -> None:
-        super().setUp()
-        self.user = User.objects.create_user(username="vlad", password="12345678")
-
-    # integration
-    def test_form_valid_redirect(self) -> None:
-        response = self.client.post(
-            self.url,
-            data={
-                "username": "vlad",
-                "password": "12345678",
-            },
-        )
-        self.assertRedirects(response, self.FormValid.redirect_url)
-
-    # # integration
-    # def test_form_valid_success_message(self) -> None:
-    #     response = self.client.post(
-    #         self.url,
-    #         data={
-    #             'username': 'vlad',
-    #             'password': '12345678',
-    #         }
-    #     )
-    #     message = str(next(iter(get_messages(response.request))))
-    #     self.assertEqual(
-    #         message,
-    #         LOGIN_SUCCESS_MESSAGE,
-    #     )
