@@ -7,8 +7,20 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 class BaseDriverFactory(abc.ABC):
     @abc.abstractmethod
-    def get_webdriver(self) -> WebDriver:
-        ...
+    def get_webdriver(self) -> WebDriver: ...
+
+
+class FirefoxDriverFactory(BaseDriverFactory):
+    host = os.getenv("STAGING_SERVER", "firefox")
+    port = "4444"
+
+    @classmethod
+    def get_webdriver(cls) -> WebDriver:
+        options = webdriver.FirefoxOptions()
+        return webdriver.Remote(
+            f"http://{cls.host}:{cls.port}",
+            options=options,
+        )
 
 
 class ChromeDriverFactory(BaseDriverFactory):
@@ -16,7 +28,7 @@ class ChromeDriverFactory(BaseDriverFactory):
     port = "4444"
 
     @classmethod
-    def get_webdriver(cls):
+    def get_webdriver(cls) -> WebDriver:
         options = webdriver.ChromeOptions()
         return webdriver.Remote(
             f"http://{cls.host}:{cls.port}",

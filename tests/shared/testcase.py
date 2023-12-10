@@ -1,28 +1,37 @@
+import socket
+
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
 from .driver import get_driver
-from .live_server import MyLiveServerTestCase
+from .exceptions import PageDoesNotExistsError
 
 
-class SharedTestCase(MyLiveServerTestCase):
+class BaseLiveServerTestCase(StaticLiveServerTestCase):
     """
-    Base test case for shared functionality.
-
-    Attributes:
-        page_class: Type[BasePage], allows you to use initiated self.page
-        path: str, allows you to use self.url
+    Require:
+        - port: int, between 8081 - 8999 like 8081
     """
+    host = socket.gethostbyname(socket.gethostname())
 
-    page_class = None
-    path: str = ""
+
+class EndToEndTestCase(BaseLiveServerTestCase):
+    """The best TestCase for End-To-End functionality"""
+
+    port: int = 0  # -> server launch
+
+    page_class = None  # -> self.page
+
+    path: str = ""  # -> self.url
 
     @property
     def url(self) -> str:
         return f"{self.live_server_url}{self.path}"
 
     def setUp(self) -> None:
-        self.driver = get_driver()
+        if self.page_class is None:
+            raise PageDoesNotExistsError('Please add page_class attribute')
 
-        if self.page_class is not None:
-            self.page = self.page_class(self)
+        self.page = self.page_class(get_driver())
 
     def tearDown(self) -> None:
-        self.driver.quit()
+        self.page.quit()

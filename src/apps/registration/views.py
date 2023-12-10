@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth import views as auth_views
+
 from django.forms import Form
 from django.http import HttpResponse
 from django.urls import reverse_lazy
@@ -9,6 +11,7 @@ from apps.registration.mixins import SuccessMessageMixin
 
 User = get_user_model()
 REGISTRATION_SUCCESS_MESSAGE = "Registration has been successful"
+LOGIN_SUCCESS_MESSAGE = "Authorization has been successful"
 
 
 class RegistrationView(
@@ -27,3 +30,11 @@ class RegistrationView(
             password=cd["password"],
         )
         return super().form_valid(form)
+
+
+class MyLoginView(
+    SuccessMessageMixin,
+    auth_views.LoginView,
+):
+    success_message: str = LOGIN_SUCCESS_MESSAGE
+    next_page: str = reverse_lazy("home:home")

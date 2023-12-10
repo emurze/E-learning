@@ -1,0 +1,4 @@
+
+
+class PageDoesNotExistsError(Exception):
+    pass

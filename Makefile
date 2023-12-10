@@ -52,14 +52,8 @@ migrate:
 restart:
 	docker compose restart
 
-restart-prod:
-	docker compose -f docker-compose.prod.yml restart
-
 down:
 	docker compose down
-
-down-prod:
-	docker compose -f docker-compose.prod.yml down
 
 clean:
 	docker compose down -v
