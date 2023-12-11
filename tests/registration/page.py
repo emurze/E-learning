@@ -27,5 +27,11 @@ class RegistrationPage(BasePage):
         password_input = self._get_password2()
         password_input.submit()
 
+    def register(self, username: str, password: str) -> None:
+        self.enter_username(username)
+        self.enter_password(password)
+        self.enter_password2(password)
+        self.submit()
+
     def get_success_message(self) -> str:
         return self.find_element(By.CLASS_NAME, "success").text

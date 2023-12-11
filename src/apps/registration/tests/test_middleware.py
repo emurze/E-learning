@@ -28,7 +28,7 @@ class LoginRequiredMiddlewareTestCase(BaseTestCase):
         redirect_path = mock_redirect.call_args[0][0]
 
         self.assertFalse(get_response.called)
-        self.assertTrue(redirect_path.startswith(settings.LOGIN_URL))
+        self.assertTrue(redirect_path.startswith(str(settings.LOGIN_URL)))
 
     # integration
     def test_getting_response(self) -> None:
@@ -61,3 +61,10 @@ class LoginRequiredMiddlewareTestCase(BaseTestCase):
         response = middleware(request)
 
         self.assertEqual(response, get_response(request))
+
+    # integration
+    def test_redirect_to_login_when_user_is_not_authenticated(self):
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(str(settings.LOGIN_URL), response.url)

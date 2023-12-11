@@ -1,19 +1,19 @@
 import functools
 from typing import Optional, Callable
 
-from tests.registration.page import RegistrationPage
+from tests.login.page import LoginPage
 
 
-def register(
+def login(
     _func: Optional[Callable] = None,
     *,
     username: str = "user",
     password: str = "12345678",
-    path: str = "/registration",
+    path: str = "/login",
 ) -> Callable:
     """
-    A register decorator that allows you to already be registered during
-    test running.
+    A login decorator that allows you to already be logged in during test
+    running.
     """
 
     def wrapper(func: Callable) -> Callable:
@@ -21,11 +21,11 @@ def register(
         def inner(self, *args, **kwargs):
             url = f"{self.live_server_url}{path}"
 
-            reg_page = RegistrationPage(self.page.driver)
+            login_page = LoginPage(self.page.driver)
 
-            reg_page.go_to_page(url)
+            login_page.go_to_page(url)
 
-            reg_page.register(
+            login_page.login(
                 username=username,
                 password=password,
             )

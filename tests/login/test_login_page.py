@@ -1,5 +1,7 @@
+from tests.login.decorators import login
 from tests.login.page import LoginPage
 from tests.registration.decorators import register
+from tests.shared.decorators import authorization
 from tests.shared.testcase import EndToEndTestCase
 
 
@@ -15,16 +17,8 @@ class LoginTestCase(EndToEndTestCase):
         # And wants to see Log-in title
         self.assertEqual(self.page.title, "Log-in")
 
-    @register(username="vlad", password="12345678")
+    @authorization(username="vlad", password="12345678")
     def test_form_can_show_success(self) -> None:
-        # After registration, client wises to be redirected to Log-in page
-        self.assertEqual(self.page.title, "Log-in")
-
-        # Client input correct data
-        self.page.enter_username("vlad")
-        self.page.enter_password("12345678")
-        self.page.submit()
-
         # Client wants to see E-Learning page
         self.assertEqual(self.page.title, "E-Learning")
 
