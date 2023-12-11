@@ -35,7 +35,7 @@ class MyLoginViewTestCase(ExtendedTestCase):
                 "password": "12345678",
             },
         )
-        self.assertIsInstance(response.context['form'], AuthenticationForm)
+        self.assertIsInstance(response.context["form"], AuthenticationForm)
 
     # integration
     def test_form_valid_redirect(self) -> None:

@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 from django.test import TestCase, RequestFactory
 
 from utils import mixin_for
@@ -31,6 +33,21 @@ class LoginMixin(mixin_for(TestCase)):
 class BaseTestCase(TestCase):
     def setUp(self) -> None:
         self.request_factory = RequestFactory()
+
+
+class AdminTestCase(BaseTestCase):
+    model_name: str  # to apply permissions for access
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.user = User.objects.create_user(
+            username=settings.DEFAULT_ADMIN_NAME,
+            email=settings.DEFAULT_ADMIN_EMAIL,
+            password=settings.DEFAULT_ADMIN_PASSWORD,
+            is_staff=True,
+        )
+        change_permission = Permission.objects.get(codename=f"change_{self.model_name}")
+        self.user.user_permissions.add(change_permission)
 
 
 class ExtendedTestCase(TestCase):
