@@ -38,3 +38,7 @@ class MyLoginView(
 ):
     success_message: str = LOGIN_SUCCESS_MESSAGE
     next_page: str = reverse_lazy("home:home")
+
+
+class MyLogoutView(auth_views.LogoutView):
+    next_page: str = reverse_lazy("login")

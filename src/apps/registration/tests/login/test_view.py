@@ -4,7 +4,7 @@ from django.contrib.messages import get_messages
 from django.contrib.sessions.models import Session
 from django.urls import reverse_lazy
 
-from apps.registration.views import MyLoginView, LOGIN_SUCCESS_MESSAGE
+from apps.registration.views import LOGIN_SUCCESS_MESSAGE, MyLoginView
 from utils.tests.base import ExtendedTestCase
 
 User = get_user_model()

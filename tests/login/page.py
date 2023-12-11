@@ -23,5 +23,10 @@ class LoginPage(BasePage):
         password_input = self._get_password()
         password_input.submit()
 
+    def login(self, username: str, password: str) -> None:
+        self.enter_username(username)
+        self.enter_password(password)
+        self.submit()
+
     def get_success_message(self) -> str:
         return self.find_element(By.CLASS_NAME, "success").text

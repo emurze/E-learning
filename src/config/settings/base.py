@@ -33,6 +33,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.registration.middleware.LoginRequiredMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -84,8 +85,11 @@ DEFAULT_ADMIN_EMAIL = os.getenv("DEFAULT_ADMIN_EMAIL", "adm1@adm1.com")
 
 DEFAULT_ADMIN_PASSWORD = os.getenv("DEFAULT_ADMIN_PASSWORD", "adm1")
 
-LOGIN_URL = "login/"
+LOGIN_URL = reverse_lazy('login')
 
 OPEN_URLS = [
+    '/registration',
+    '/login',
+    LOGIN_URL,
     reverse_lazy("registration"),
 ]
