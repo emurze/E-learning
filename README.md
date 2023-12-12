@@ -78,7 +78,7 @@ make test
 ## How to run migrations7
 
 ```
-make migrations
+make migrations app="app_name"
 ```
 
 ```

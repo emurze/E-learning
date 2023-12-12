@@ -1,21 +1,32 @@
-from unittest import skip
+from http import HTTPStatus
 
-from django.urls import reverse
+from django.contrib.admin import AdminSite
 
-from apps.courses.admin import SubjectAdmin
 from apps.courses.models import Subject
 from utils.tests.base import AdminTestCase
 
 
 class SubjectAdminTestCase(AdminTestCase):
-    model_name: str = "subject"
+    """Task: Write unittests"""
 
-    @skip
+    def setUp(self) -> None:
+        super().setUp()
+        self.subject = Subject.objects.create(title='__SUBJECT__')
+
+    # integration
     def test_subject_is_displayed(self) -> None:
-        url = reverse("admin:courses_subject_changelist")
-        request = self.request_factory.get(url)
-        request.user = self.user
+        url = self.make_url(AdminSite(), Subject, "changelist")
+        response = self.client.get(url)
+        assert response.status_code == HTTPStatus.OK
 
-        response = SubjectAdmin(Subject, self.user).changelist_view(request)
+    # integration
+    def test_show_subject_instance(self) -> None:
+        url = self.make_url(AdminSite(), Subject, "changelist")
+        response = self.client.get(url)
+        self.assertContains(response, '__SUBJECT__')
 
-        self.assertContains(response, "Subject1")
+    # integration
+    def test_show_title_field(self) -> None:
+        url = self.make_url(AdminSite(), Subject, "changelist")
+        response = self.client.get(url)
+        self.assertContains(response, 'Title')

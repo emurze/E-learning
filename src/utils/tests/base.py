@@ -1,7 +1,10 @@
 from django.conf import settings
+from django.contrib.admin import AdminSite
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
+from django.db.models import Model
 from django.test import TestCase, RequestFactory
+from django.urls import reverse
 
 from utils import mixin_for
 from utils.tests.request_factory_extended_adapter import (
@@ -36,18 +39,24 @@ class BaseTestCase(TestCase):
 
 
 class AdminTestCase(BaseTestCase):
-    model_name: str  # to apply permissions for access
-
-    def setUp(self) -> None:
-        super().setUp()
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls) -> None:
+        cls.user = User.objects.create_superuser(
             username=settings.DEFAULT_ADMIN_NAME,
             email=settings.DEFAULT_ADMIN_EMAIL,
             password=settings.DEFAULT_ADMIN_PASSWORD,
-            is_staff=True,
         )
-        change_permission = Permission.objects.get(codename=f"change_{self.model_name}")
-        self.user.user_permissions.add(change_permission)
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.client.force_login(self.user)
+
+    @staticmethod
+    def make_url(site: AdminSite, model: type[Model], page: str) -> str:
+        _meta = model._meta
+        return reverse(
+            f"{site.name}:{_meta.app_label}_{_meta.model_name}_{page}"
+        )
 
 
 class ExtendedTestCase(TestCase):
