@@ -1,3 +1,6 @@
+import copy
+from pprint import pprint
+
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models.signals import pre_save
@@ -8,14 +11,14 @@ from utils.tests.base import BaseTestCase, User
 
 class CourseModelTestCase(BaseTestCase):
     """
-    owner: User
+    owner: fk User
     title: str
     slug: str auto-gen
-    subject: fk
+    subject: fk Subject
     description: text
     created: date auto-gen
 
-    Task: Deleted self.user.pk in transaction problem
+    ordering by -created
     """
 
     login_username: str = "vladik"
@@ -109,7 +112,7 @@ class CourseModelTestCase(BaseTestCase):
             subject=subject,
             owner=self.user,
         )
-        self.assertEqual(list(subject.courses.all()), [course1, course2])
+        self.assertEqual(list(subject.courses.all()), [course2, course1])
 
     # integration
     def test_fk_subject_on_delete(self) -> None:
@@ -149,26 +152,38 @@ class CourseModelTestCase(BaseTestCase):
         course1 = Course.objects.create(title='Course1', owner=self.user)
         course2 = Course.objects.create(title='Course2', owner=self.user)
 
-        self.assertEqual(list(self.user.courses.all()), [course1, course2])
+        self.assertEqual(list(self.user.courses.all()), [course2, course1])
 
-    # # integration
-    # def test_fk_owner_on_delete(self) -> None:
-    #     course1 = Course.objects.create(title='Course1', owner=self.user)
-    #     course2 = Course.objects.create(title='Course2', owner=self.user)
-    #
-    #     self.assertEqual(list(self.user.courses.all()), [course1, course2])
-    #
-    #     sid = transaction.savepoint()
-    #
-    #     self.user.delete()
-    #
-    #     with self.assertRaises(course1.DoesNotExist):
-    #         course1.refresh_from_db()
-    #
-    #     with self.assertRaises(course2.DoesNotExist):
-    #         course2.refresh_from_db()
-    #
-    #     transaction.savepoint_rollback(sid)
-    #     self.user.pk = 1
-    #
-    #     self.assertEqual(list(self.user.courses.all()), [course1, course2])
+    # integration
+    def test_fk_owner_on_delete(self) -> None:
+        course1 = Course.objects.create(title='Course1', owner=self.user)
+        course2 = Course.objects.create(title='Course2', owner=self.user)
+
+        self.assertEqual(list(self.user.courses.all()), [course2, course1])
+
+        with transaction.atomic():
+            _id = copy.copy(self.user.id)
+            sid = transaction.savepoint()
+
+            self.user.delete()
+
+            with self.assertRaises(course1.DoesNotExist):
+                course1.refresh_from_db()
+
+            with self.assertRaises(course2.DoesNotExist):
+                course2.refresh_from_db()
+
+            transaction.savepoint_rollback(sid)
+            self.user.id = _id
+
+        self.assertEqual(list(self.user.courses.all()), [course2, course1])
+
+    # integration
+    def test_reversed_ordering(self) -> None:
+        course1 = Course.objects.create(title='Course1', owner=self.user)
+        course2 = Course.objects.create(title='Course2', owner=self.user)
+
+        courses = Course.objects.all()
+
+        self.assertTrue(courses.ordered)
+        self.assertEqual([course2, course1], list(courses))

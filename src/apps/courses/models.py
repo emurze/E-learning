@@ -11,6 +11,15 @@ User = get_user_model()
 class Subject(models.Model):
     title = models.CharField(max_length=128)
     slug = models.SlugField(max_length=128, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created',)
+
+        # If Subject size becomes more than 100 then add
+        # indexes = (
+        #     models.Index(fields=('-created',)),
+        # )
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__}(title={self.title})'
@@ -38,6 +47,12 @@ class Course(models.Model):
     )
     description = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created',)
+        indexes = (
+            models.Index(fields=('-created',)),
+        )
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__}(title={self.title})'

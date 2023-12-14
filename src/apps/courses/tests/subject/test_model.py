@@ -9,6 +9,9 @@ class SubjectModelTestCase(BaseTestCase):
     """
     title: str
     slug: str auto-gen
+    created: date auto-gen
+
+    ordering by -created
     """
 
     # integration
@@ -68,3 +71,21 @@ class SubjectModelTestCase(BaseTestCase):
     def test_magic_str(self) -> None:
         subject = Subject(title="weFWE")
         self.assertIn(subject.title, str(subject))
+
+    # integration
+    def test_create_auto_generation(self) -> None:
+        subject = Subject(title='Subject1')
+        self.assertIs(subject.created, None)
+
+        subject.save()
+        self.assertIsNot(subject.created, None)
+
+    # integration
+    def test_reversed_ordering(self) -> None:
+        subject1 = Subject.objects.create(title='Subject1')
+        subject2 = Subject.objects.create(title='Subject2')
+
+        subjects = Subject.objects.all()
+
+        self.assertTrue(subjects.ordered)
+        self.assertEqual([subject2, subject1], list(subjects))
