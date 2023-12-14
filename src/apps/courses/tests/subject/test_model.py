@@ -7,12 +7,31 @@ from utils.tests.base import BaseTestCase
 
 class SubjectModelTestCase(BaseTestCase):
     """
-    title: str
-    slug: str auto-gen
-    created: date auto-gen
+    pk: bigint ( Primary Key, unique, auto-gen )
 
-    ordering by -created
+    title: varchar ( maxlength, Not Null )
+
+    slug: varchar ( maxlength, auto-gen )
+
+    created: date ( auto-gen )
+
+    ordering by title
+
+    __str__ contains title
     """
+
+    # integration
+    def test_id_is_pk(self) -> None:
+        subject = Subject(title=".")
+        self.assertEqual(subject.id, subject.pk)
+
+    # integration
+    def test_id_unique(self) -> None:
+        Subject.objects.create(id=1, title=".")
+
+        with self.assertRaises(ValidationError):
+            subject2 = Subject(id=1, title="..")
+            subject2.full_clean()
 
     # integration
     def test_title_not_null(self) -> None:
@@ -82,10 +101,10 @@ class SubjectModelTestCase(BaseTestCase):
 
     # integration
     def test_reversed_ordering(self) -> None:
-        subject1 = Subject.objects.create(title='Subject1')
-        subject2 = Subject.objects.create(title='Subject2')
+        subject1 = Subject.objects.create(title='A_Subject')
+        subject2 = Subject.objects.create(title='B_Subject')
 
         subjects = Subject.objects.all()
 
         self.assertTrue(subjects.ordered)
-        self.assertEqual([subject2, subject1], list(subjects))
+        self.assertEqual([subject1, subject2], list(subjects))

@@ -14,11 +14,11 @@ class Subject(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ('-created',)
+        ordering = ('title',)
 
-        # If Subject size becomes more than 100 then add
+        # If the number of subjects becomes more than 100 then add
         # indexes = (
-        #     models.Index(fields=('-created',)),
+        #     models.Index(fields=('title',)),
         # )
 
     def __str__(self) -> str:
@@ -61,3 +61,25 @@ class Course(models.Model):
 @receiver(pre_save, sender=Course)
 def module_generate_title(sender: Course, **kwargs) -> None:
     generate_title(sender, **kwargs)
+
+
+class Module(models.Model):
+    title = models.CharField(max_length=128)
+    description = models.TextField(null=True, blank=True)
+    course = models.ForeignKey(
+        Course,
+        related_name='modules',
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self) -> str:
+        """
+        Pay attention to add select_related() or prefetch_related() in
+        Admin or your another queries
+
+        class YourModelAdmin(admin.ModelAdmin):
+            def get_queryset(self, request: WSGIRequest) -> QuerySet:
+                queryset = super().get_queryset(request)
+                return <Your optimized query>
+        """
+        return f'{self.course.title}:Module({self.title})'

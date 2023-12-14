@@ -1,5 +1,4 @@
 import copy
-from pprint import pprint
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
@@ -11,14 +10,23 @@ from utils.tests.base import BaseTestCase, User
 
 class CourseModelTestCase(BaseTestCase):
     """
-    owner: fk User
-    title: str
-    slug: str auto-gen
-    subject: fk Subject
+    id: bigint - ( Primary Key, unique, auto-gen )
+
+    owner: User - ( Foreign Key, Not Null )
+
+    title: varchar - ( maxlength, Not Null )
+
+    slug: varchar - ( unique, maxlength, auto-gen )
+
+    subject: Subject - ( Foreign Key )
+
     description: text
-    created: date auto-gen
+
+    created: date - ( Not Null, auto-gen )
 
     ordering by -created
+
+    __str__ contains title
     """
 
     login_username: str = "vladik"
@@ -30,6 +38,19 @@ class CourseModelTestCase(BaseTestCase):
             username=cls.login_username,
             password=cls.login_password,
         )
+
+    # integration
+    def test_id_is_pk(self) -> None:
+        course = Course(title=".", owner=self.user)
+        self.assertEqual(course.id, course.pk)
+
+    # integration
+    def test_id_unique(self) -> None:
+        Course.objects.create(id=1, title=".", owner=self.user)
+
+        with self.assertRaises(ValidationError):
+            course2 = Course(id=1, title="..", owner=self.user)
+            course2.full_clean()
 
     # integration
     def test_title_maxlength(self) -> None:
@@ -85,19 +106,14 @@ class CourseModelTestCase(BaseTestCase):
             course2.full_clean()
 
     # integration
+    def test_description_existence(self) -> None:
+        course = Course(title='.', description='hi', owner=self.user)
+        course.save()
+
+    # integration
     def test_magic_str(self) -> None:
         course = Course(title="weFWE", owner=self.user)
         self.assertIn(course.title, str(course))
-
-    # integration
-    def test_fk_subject(self) -> None:
-        subject = Subject.objects.create(title='Math')
-        course = Course.objects.create(
-            title='Course',
-            subject=subject,
-            owner=self.user,
-        )
-        self.assertEqual(course.subject, subject)
 
     # integration
     def test_fk_subject_rel_name(self) -> None:
@@ -141,11 +157,6 @@ class CourseModelTestCase(BaseTestCase):
 
         course.save()
         self.assertIsNot(course.created, None)
-
-    # integration
-    def test_fk_owner(self) -> None:
-        course1 = Course.objects.create(title='Course1', owner=self.user)
-        self.assertEqual(course1.owner, self.user)
 
     # integration
     def test_fk_owner_rel_name(self) -> None:
