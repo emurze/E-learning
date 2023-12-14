@@ -68,14 +68,14 @@ class SubjectModelTestCase(BaseTestCase):
     # integration
     def test_slug_constraint(self) -> None:
         with self.assertRaises(ValidationError):
-            subject = Subject(title='.', slug="sEF[]")
+            subject = Subject(title=".", slug="sEF[]")
             subject.full_clean()
 
     # integration
     def test_slug_auto_generation(self) -> None:
         subject = Subject(title="weF")
         subject.save()
-        self.assertEqual('wef', subject.slug)
+        self.assertEqual("wef", subject.slug)
 
     # integration
     def test_slug_unique(self) -> None:
@@ -93,7 +93,7 @@ class SubjectModelTestCase(BaseTestCase):
 
     # integration
     def test_create_auto_generation(self) -> None:
-        subject = Subject(title='Subject1')
+        subject = Subject(title="Subject1")
         self.assertIs(subject.created, None)
 
         subject.save()
@@ -101,8 +101,8 @@ class SubjectModelTestCase(BaseTestCase):
 
     # integration
     def test_reversed_ordering(self) -> None:
-        subject1 = Subject.objects.create(title='A_Subject')
-        subject2 = Subject.objects.create(title='B_Subject')
+        subject1 = Subject.objects.create(title="A_Subject")
+        subject2 = Subject.objects.create(title="B_Subject")
 
         subjects = Subject.objects.all()
 

@@ -29,6 +29,10 @@
     
     - Do not allow bypassing the above settings
 
+7. Click Settings -> General
+
+   - After pull requests are merged, you can have head branches deleted automatically.
+
 ## How to install project?
 
 ```

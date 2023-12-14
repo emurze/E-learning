@@ -54,9 +54,7 @@ class AdminTestCase(BaseTestCase):
     @staticmethod
     def make_url(site: AdminSite, model: type[Model], page: str) -> str:
         _meta = model._meta
-        return reverse(
-            f"{site.name}:{_meta.app_label}_{_meta.model_name}_{page}"
-        )
+        return reverse(f"{site.name}:{_meta.app_label}_{_meta.model_name}_{page}")
 
 
 class ExtendedTestCase(TestCase):

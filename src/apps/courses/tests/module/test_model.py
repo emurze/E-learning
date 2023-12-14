@@ -31,18 +31,18 @@ class ModuleModelTestCase(BaseTestCase):
             password=settings.DEFAULT_ADMIN_PASSWORD,
         )
         cls.course = Course.objects.create(
-            title='Course1',
+            title="Course1",
             owner=user,
         )
 
     # integration
     def test_id_is_pk(self) -> None:
-        module = Module.objects.create(title='Hi', course=self.course)
+        module = Module.objects.create(title="Hi", course=self.course)
         self.assertEqual(module.pk, module.id)
 
     # integration
     def test_id_auto_generation(self) -> None:
-        module = Module(title='Hi', course=self.course)
+        module = Module(title="Hi", course=self.course)
         self.assertFalse(module.id)
 
         module.save()
@@ -50,11 +50,11 @@ class ModuleModelTestCase(BaseTestCase):
 
     # integration
     def test_title_maxlength(self) -> None:
-        module = Module(title='H' * 128, course=self.course)
+        module = Module(title="H" * 128, course=self.course)
         module.full_clean()
 
         with self.assertRaises(ValidationError):
-            module = Module(title='H' * 129, course=self.course)
+            module = Module(title="H" * 129, course=self.course)
             module.full_clean()
 
     # integration
@@ -65,25 +65,27 @@ class ModuleModelTestCase(BaseTestCase):
 
     # integration
     def test_description_existence(self) -> None:
-        module = Module(title='.', description='hi', course=self.course)
+        module = Module(title=".", description="hi", course=self.course)
         module.full_clean()
 
     # integration
     def test_course_fk_not_null(self) -> None:
         with self.assertRaises(ValidationError):
-            module = Module(title='.', )
+            module = Module(
+                title=".",
+            )
             module.full_clean()
 
     # integration
     def test_course_fk_rel_name(self) -> None:
-        module1 = Module.objects.create(title='.', course=self.course)
-        module2 = Module.objects.create(title='..', course=self.course)
+        module1 = Module.objects.create(title=".", course=self.course)
+        module2 = Module.objects.create(title="..", course=self.course)
 
         self.assertEqual([module1, module2], list(self.course.modules.all()))
 
     # integration
     def test_course_fk_on_delete(self) -> None:
-        module1 = Module.objects.create(title='.', course=self.course)
+        module1 = Module.objects.create(title=".", course=self.course)
 
         self.assertEqual([module1], list(self.course.modules.all()))
 
@@ -103,7 +105,7 @@ class ModuleModelTestCase(BaseTestCase):
 
     # integration
     def test_magic_str(self) -> None:
-        module1 = Module.objects.create(title='.', course=self.course)
+        module1 = Module.objects.create(title=".", course=self.course)
 
         self.assertIn(module1.title, str(module1))
         self.assertIn(self.course.title, str(module1))

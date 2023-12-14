@@ -14,7 +14,7 @@ class Subject(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ('title',)
+        ordering = ("title",)
 
         # If the number of subjects becomes more than 100 then add
         # indexes = (
@@ -22,7 +22,7 @@ class Subject(models.Model):
         # )
 
     def __str__(self) -> str:
-        return f'{self.__class__.__name__}(title={self.title})'
+        return f"{self.__class__.__name__}(title={self.title})"
 
 
 @receiver(pre_save, sender=Subject)
@@ -33,14 +33,14 @@ def subject_generate_title(sender: Subject, **kwargs) -> None:
 class Course(models.Model):
     owner = models.ForeignKey(
         User,
-        related_name='courses',
+        related_name="courses",
         on_delete=models.CASCADE,
     )
     title = models.CharField(max_length=128)
     slug = models.SlugField(max_length=128, unique=True)
     subject = models.ForeignKey(
         Subject,
-        related_name='courses',
+        related_name="courses",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -49,13 +49,11 @@ class Course(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ('-created',)
-        indexes = (
-            models.Index(fields=('-created',)),
-        )
+        ordering = ("-created",)
+        indexes = (models.Index(fields=("-created",)),)
 
     def __str__(self) -> str:
-        return f'{self.__class__.__name__}(title={self.title})'
+        return f"{self.__class__.__name__}(title={self.title})"
 
 
 @receiver(pre_save, sender=Course)
@@ -68,7 +66,7 @@ class Module(models.Model):
     description = models.TextField(null=True, blank=True)
     course = models.ForeignKey(
         Course,
-        related_name='modules',
+        related_name="modules",
         on_delete=models.CASCADE,
     )
 
@@ -82,4 +80,4 @@ class Module(models.Model):
                 queryset = super().get_queryset(request)
                 return <Your optimized query>
         """
-        return f'{self.course.title}:Module({self.title})'
+        return f"{self.course.title}:Module({self.title})"

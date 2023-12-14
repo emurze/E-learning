@@ -77,24 +77,24 @@ class CourseModelTestCase(BaseTestCase):
 
     # integration
     def test_slug_maxlength(self) -> None:
-        course = Course(title='.', slug='s' * 128, owner=self.user)
+        course = Course(title=".", slug="s" * 128, owner=self.user)
         course.full_clean()
 
         with self.assertRaises(ValidationError):
-            course2 = Course(title=".", slug='s' * 129, owner=self.user)
+            course2 = Course(title=".", slug="s" * 129, owner=self.user)
             course2.full_clean()
 
     # integration
     def test_slug_constraint(self) -> None:
         with self.assertRaises(ValidationError):
-            course2 = Course(title=".", slug='s[]', owner=self.user)
+            course2 = Course(title=".", slug="s[]", owner=self.user)
             course2.full_clean()
 
     # integration
     def test_slug_auto_generation(self) -> None:
         course = Course(title="weF", owner=self.user)
         course.save()
-        self.assertEqual('wef', course.slug)
+        self.assertEqual("wef", course.slug)
 
     # integration
     def test_slug_unique(self) -> None:
@@ -107,7 +107,7 @@ class CourseModelTestCase(BaseTestCase):
 
     # integration
     def test_description_existence(self) -> None:
-        course = Course(title='.', description='hi', owner=self.user)
+        course = Course(title=".", description="hi", owner=self.user)
         course.save()
 
     # integration
@@ -117,14 +117,14 @@ class CourseModelTestCase(BaseTestCase):
 
     # integration
     def test_fk_subject_rel_name(self) -> None:
-        subject = Subject.objects.create(title='Math')
+        subject = Subject.objects.create(title="Math")
         course1 = Course.objects.create(
-            title='Course1',
+            title="Course1",
             subject=subject,
             owner=self.user,
         )
         course2 = Course.objects.create(
-            title='Course2',
+            title="Course2",
             subject=subject,
             owner=self.user,
         )
@@ -132,9 +132,9 @@ class CourseModelTestCase(BaseTestCase):
 
     # integration
     def test_fk_subject_on_delete(self) -> None:
-        subject = Subject.objects.create(title='Math')
+        subject = Subject.objects.create(title="Math")
         course1 = Course.objects.create(
-            title='Course1',
+            title="Course1",
             subject=subject,
             owner=self.user,
         )
@@ -147,12 +147,12 @@ class CourseModelTestCase(BaseTestCase):
 
     # integration
     def test_description_null(self) -> None:
-        course = Course.objects.create(title='Math', owner=self.user)
+        course = Course.objects.create(title="Math", owner=self.user)
         self.assertEqual(course.description, None)
 
     # integration
     def test_created_auto_generation(self) -> None:
-        course = Course(title='Math', owner=self.user)
+        course = Course(title="Math", owner=self.user)
         self.assertIs(course.created, None)
 
         course.save()
@@ -160,15 +160,15 @@ class CourseModelTestCase(BaseTestCase):
 
     # integration
     def test_fk_owner_rel_name(self) -> None:
-        course1 = Course.objects.create(title='Course1', owner=self.user)
-        course2 = Course.objects.create(title='Course2', owner=self.user)
+        course1 = Course.objects.create(title="Course1", owner=self.user)
+        course2 = Course.objects.create(title="Course2", owner=self.user)
 
         self.assertEqual(list(self.user.courses.all()), [course2, course1])
 
     # integration
     def test_fk_owner_on_delete(self) -> None:
-        course1 = Course.objects.create(title='Course1', owner=self.user)
-        course2 = Course.objects.create(title='Course2', owner=self.user)
+        course1 = Course.objects.create(title="Course1", owner=self.user)
+        course2 = Course.objects.create(title="Course2", owner=self.user)
 
         self.assertEqual(list(self.user.courses.all()), [course2, course1])
 
@@ -191,8 +191,8 @@ class CourseModelTestCase(BaseTestCase):
 
     # integration
     def test_reversed_ordering(self) -> None:
-        course1 = Course.objects.create(title='Course1', owner=self.user)
-        course2 = Course.objects.create(title='Course2', owner=self.user)
+        course1 = Course.objects.create(title="Course1", owner=self.user)
+        course2 = Course.objects.create(title="Course2", owner=self.user)
 
         courses = Course.objects.all()
 
