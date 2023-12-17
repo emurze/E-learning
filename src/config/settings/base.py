@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
+DEBUG = bool(int(os.getenv("DEBUG", default=0)))
 
 ALLOWED_HOSTS = [
     "mysite.com",
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "apps.base.apps.BaseConfig",
     "apps.home.apps.HomeConfig",
     "apps.registration.apps.RegistrationConfig",
+    "apps.courses.apps.CoursesConfig",
 ]
 
 MIDDLEWARE = [
@@ -85,11 +86,14 @@ DEFAULT_ADMIN_EMAIL = os.getenv("DEFAULT_ADMIN_EMAIL", "adm1@adm1.com")
 
 DEFAULT_ADMIN_PASSWORD = os.getenv("DEFAULT_ADMIN_PASSWORD", "adm1")
 
-LOGIN_URL = reverse_lazy('login')
+LOGIN_URL = reverse_lazy("login")
 
 OPEN_URLS = [
-    '/registration',
-    '/login',
+    "/admin",
+    "/admin/",
+    "/admin/login/",
+    "/registration",
+    "/login",
     LOGIN_URL,
     reverse_lazy("registration"),
 ]

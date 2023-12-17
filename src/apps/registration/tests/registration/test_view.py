@@ -3,10 +3,8 @@ from django.test import Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 
-from apps.registration.forms import RegistrationForm, \
-    ERROR_MESSAGE_USERNAME_LESS_THAN_3
-from apps.registration.views import RegistrationView, \
-    REGISTRATION_SUCCESS_MESSAGE
+from apps.registration.forms import RegistrationForm, ERROR_MESSAGE_USERNAME_LESS_THAN_3
+from apps.registration.views import RegistrationView, REGISTRATION_SUCCESS_MESSAGE
 from utils.tests.base import ExtendedTestCase
 
 User = get_user_model()

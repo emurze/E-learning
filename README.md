@@ -29,6 +29,10 @@
     
     - Do not allow bypassing the above settings
 
+7. Click Settings -> General
+
+   - After pull requests are merged, you can have head branches deleted automatically.
+
 ## How to install project?
 
 ```
@@ -78,7 +82,7 @@ make test
 ## How to run migrations7
 
 ```
-make migrations
+make migrations app="app_name"
 ```
 
 ```

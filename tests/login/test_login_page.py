@@ -1,6 +1,4 @@
-from tests.login.decorators import login
 from tests.login.page import LoginPage
-from tests.registration.decorators import register
 from tests.shared.decorators import authorization
 from tests.shared.testcase import EndToEndTestCase
 

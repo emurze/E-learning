@@ -36,7 +36,7 @@ migrations:
 	@if [ -z $$(docker ps -q -f name=${DOCKER_CONTAINER_NAME}) ]; then \
 		$(call raise_container_does_not_exist); \
 	else \
-		docker exec ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run python3 manage.py makemigrations"; \
+		docker exec -it ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run python3 manage.py makemigrations ${app}"; \
 	fi
 
 migrate:
@@ -45,6 +45,17 @@ migrate:
 	else \
 		docker exec ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run python3 manage.py migrate"; \
 	fi
+
+
+# Shell
+
+shell:
+	@if [ -z $$(docker ps -q -f name=${DOCKER_CONTAINER_NAME}) ]; then \
+		$(call raise_container_does_not_exist); \
+	else \
+		docker exec -it ${DOCKER_CONTAINER_NAME} bash -c "cd src && poetry run python3 manage.py shell"; \
+	fi
+
 
 
 # Restart | Down

@@ -10,7 +10,7 @@ def authorization(
     *,
     username: str = "user",
     password: str = "12345678",
-    registration_path: str = '/registration',
+    registration_path: str = "/registration",
 ) -> Callable:
     """
     An authorization decorator that allows you to already be logged in during

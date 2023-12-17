@@ -64,7 +64,7 @@ class LoginRequiredMiddlewareTestCase(BaseTestCase):
 
     # integration
     def test_redirect_to_login_when_user_is_not_authenticated(self):
-        response = self.client.get('/')
+        response = self.client.get("/")
 
         self.assertEqual(response.status_code, 302)
         self.assertIn(str(settings.LOGIN_URL), response.url)

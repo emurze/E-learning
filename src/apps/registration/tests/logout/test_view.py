@@ -6,14 +6,14 @@ from utils.tests.base import LoginBaseTestCase
 
 
 class MyLogoutViewTestCase(LoginBaseTestCase):
-    url: str = reverse_lazy('logout')
+    url: str = reverse_lazy("logout")
     view_class = MyLogoutView
-    redirect_url: str = reverse_lazy('login')
+    redirect_url: str = reverse_lazy("login")
 
     # integration
     def test_redirect(self) -> None:
         # Client sees page because it's authenticated
-        response = self.client.get('/')
+        response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
 
         # Client logouts
@@ -21,10 +21,10 @@ class MyLogoutViewTestCase(LoginBaseTestCase):
 
         # And it should be redirected
         self.assertEqual(response.status_code, 302)
-        self.assertIn('login/', response.url)
+        self.assertIn("login/", response.url)
 
         # And it doesn't see page because it isn't authenticated
-        response = self.client.get('/')
+        response = self.client.get("/")
         self.assertEqual(response.status_code, 302)
 
     # integration
