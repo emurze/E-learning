@@ -22,7 +22,7 @@ class Subject(models.Model):
         # )
 
     def __str__(self) -> str:
-        return f"{self.__class__.__name__}(title={self.title})"
+        return self.title
 
 
 @receiver(pre_save, sender=Subject)
@@ -53,7 +53,7 @@ class Course(models.Model):
         indexes = (models.Index(fields=("-created",)),)
 
     def __str__(self) -> str:
-        return f"{self.__class__.__name__}(title={self.title})"
+        return self.title
 
 
 @receiver(pre_save, sender=Course)
@@ -71,13 +71,4 @@ class Module(models.Model):
     )
 
     def __str__(self) -> str:
-        """
-        Pay attention to add select_related() or prefetch_related() in
-        Admin or your another queries
-
-        class YourModelAdmin(admin.ModelAdmin):
-            def get_queryset(self, request: WSGIRequest) -> QuerySet:
-                queryset = super().get_queryset(request)
-                return <Your optimized query>
-        """
-        return f"{self.course.title}:Module({self.title})"
+        return self.title

@@ -1,6 +1,6 @@
 import os
 
-TEST_DB_ALIAS = 'test'
+TEST_DB_ALIAS = "test"
 
 DATABASES = {
     "default": {

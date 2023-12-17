@@ -80,7 +80,6 @@ class ModuleModelTestCase(BaseTestCase):
     def test_course_fk_rel_name(self) -> None:
         module1 = Module.objects.create(title=".", course=self.course)
         module2 = Module.objects.create(title="..", course=self.course)
-
         self.assertEqual([module1, module2], list(self.course.modules.all()))
 
     # integration
@@ -105,7 +104,5 @@ class ModuleModelTestCase(BaseTestCase):
 
     # integration
     def test_magic_str(self) -> None:
-        module1 = Module.objects.create(title=".", course=self.course)
-
-        self.assertIn(module1.title, str(module1))
-        self.assertIn(self.course.title, str(module1))
+        module = Module.objects.create(title=".", course=self.course)
+        self.assertIn(module.title, str(module))

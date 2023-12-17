@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = bool(int(os.getenv('DEBUG', default=0)))
+DEBUG = bool(int(os.getenv("DEBUG", default=0)))
 
 ALLOWED_HOSTS = [
     "mysite.com",
